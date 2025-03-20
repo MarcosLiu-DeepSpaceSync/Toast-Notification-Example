@@ -3,14 +3,21 @@ import { toast } from 'react-toastify';
 
 export default function Child() {
 
-  const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+  // const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+  const wait = (ms: number) => 
+    new Promise((_, reject) => setTimeout(() => reject(new Error("Something went wrong!")), ms));
 
   const handldClick = async () => {
     const updatePromise = wait(3000)
     toast.promise(updatePromise, {
       pending: "Updating ...",
       success: "Successfully updated.",
-      error: "Error!",
+      error: {
+        render({data}) {
+          return `Error: ${data}`
+        }
+      },
     })
 
   }
